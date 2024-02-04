@@ -227,7 +227,7 @@ void CHalfLifeMultiplay :: Think ( void )
 		int bestfrags = 9999;
 		int remain;
 
-		// check if any player is over the frag limit
+		// check if any player is over/close to the frag limit 
 		for ( int i = 1; i <= gpGlobals->maxClients; i++ )
 		{
 			CBaseEntity *pPlayer = UTIL_PlayerByIndex( i );
@@ -238,13 +238,21 @@ void CHalfLifeMultiplay :: Think ( void )
 				return;
 			}
 
-
 			if ( pPlayer )
 			{
 				remain = flFragLimit - pPlayer->pev->frags;
 				if ( remain < bestfrags )
 				{
 					bestfrags = remain;
+				}
+				if (remain == 5) {
+					UTIL_ClientPrintAll(HUD_PRINTCENTER, UTIL_VarArgs("%s : FIVE FRAGS REMAINING!\n",
+						(pPlayer->pev->netname && STRING(pPlayer->pev->netname)[0] != 0) ? STRING(pPlayer->pev->netname) : "unknown"));
+				}
+				
+				if (remain == 1) {
+					UTIL_ClientPrintAll(HUD_PRINTCENTER, UTIL_VarArgs("%s : ONE FRAG REMAINING!\n",
+						(pPlayer->pev->netname && STRING(pPlayer->pev->netname)[0] != 0) ? STRING(pPlayer->pev->netname) : "unknown"));
 				}
 			}
 
